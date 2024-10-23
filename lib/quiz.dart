@@ -28,6 +28,7 @@ class _QuizState extends State<Quiz> {
     
 
     return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
