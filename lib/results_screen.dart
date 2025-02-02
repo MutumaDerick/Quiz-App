@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/data/question.dart';
+import 'package:quiz_app/question_summary.dart';
 
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({
@@ -19,8 +20,8 @@ class ResultsScreen extends StatelessWidget {
       summary.add({
         'question_index': i,
         'question': questions[i].text,
-        'chosenAnswer': chosenAnswers[i],
-        'correctAnswer': questions[i].answers[0],
+        'user_answer': chosenAnswers[i],
+        'correct_answer': questions[i].answers[0],
         'isCorrect': isCorrect,
       });
     }
@@ -39,24 +40,14 @@ class ResultsScreen extends StatelessWidget {
             children: [
               const Text('You answered X out of Y questions correctly!'),
               const SizedBox(height: 30),
-              const Text('Your score is Z%'),
+              QuestionsSummary(summaryData: getSummaryData()),
               const SizedBox(height: 30),
-              OutlinedButton.icon(
+              TextButton(
                 onPressed: () {
-                  // Restart the quiz
+                  //
                 },
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 15,
-                    horizontal: 30,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                icon: const Icon(Icons.replay),
-                label: const Text('Restart Quiz'),
-              ),
+                child: const Text('Restart Quiz!'),
+              )
             ],
           )),
     );
