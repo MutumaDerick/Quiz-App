@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/data/question.dart';
 import 'package:quiz_app/question_summary.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({
     super.key,
     required this.chosenAnswers,
+    required this.onRestart,
   });
 
   final List<String> chosenAnswers;
+  final void Function() onRestart;
 
   List<Map<String, Object>> getSummaryData() {
     final List<Map<String, Object>> summary = [];
@@ -31,6 +35,12 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final summaryData = getSummaryData();
+    final numTotalQuestions = questions.length;
+    final numCorrectQuestion = summaryData.where((data) {
+      return data['user_answer'] == data['correct_answer'];
+    }).length;
+
     return SizedBox(
       width: double.infinity,
       child: Container(
@@ -38,16 +48,32 @@ class ResultsScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('You answered X out of Y questions correctly!'),
+              Text(
+                'You answered $numCorrectQuestion out of $numTotalQuestions questions correctly!',
+                style: GoogleFonts.lato(
+                  color: const Color.fromARGB(255, 230, 200, 253),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 30),
-              QuestionsSummary(summaryData: getSummaryData()),
+              QuestionsSummary(summaryData: summaryData),
               const SizedBox(height: 30),
-              TextButton(
-                onPressed: () {
-                  //
-                },
-                child: const Text('Restart Quiz!'),
-              )
+              OutlinedButton.icon(
+                onPressed: onRestart,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 20,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                icon: const Icon(Icons.refresh),
+                label: const Text('Restart Quiz'),
+              ),
             ],
           )),
     );
